@@ -1,0 +1,46 @@
+<p>This is the new tab</p>
+<form>
+  <input />
+  <button id="send" type="submit">Send message</button>
+</form>
+<button type="button" id="close">Close</button>
+<button type="button" id="request">Make network request</button>
+<button type="button" id="log">Log Message</button>
+<button type="button" id="error">Throw error</button>
+<button type="button" id="metrics">Gather metrics</button>
+
+<script>
+  const input = document.querySelector('input')
+
+  document.querySelector('form').addEventListener('submit', (e) => {
+    e.preventDefault()
+  })
+
+  document.querySelector('#send').addEventListener('click', () => {
+    window.opener.postMessage({ message: input.value })
+
+    input.value = ''
+  })
+
+  document.querySelector('#close').addEventListener('click', () => {
+    window.opener.postMessage({ close: true, payload: { some: 'very', important: 'data' } })
+  })
+
+  document.querySelector('#request').addEventListener('click', () => {
+    fetch('http://localhost:3500/').then((res) => res.text()).then(console.log)
+  })
+
+  document.querySelector('#log').addEventListener('click', () => {
+    console.log('A message')
+  })
+
+  document.querySelector('#error').addEventListener('click', () => {
+    throw new Error('Page-thrown error triggered by button')
+  })
+
+  document.querySelector('#metrics').addEventListener('click', () => {
+    console.timeStamp('timestamp label')
+  })
+
+  // throw new Error('Page-thrown error')
+</script>
