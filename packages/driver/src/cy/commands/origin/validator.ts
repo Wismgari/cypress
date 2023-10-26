@@ -85,6 +85,26 @@ export class Validator {
     }
 
     // Users would be better off not using cy.origin if the origin is part of the same super domain.
+		
+		/**
+		 * Our user journey starts on BASE_URL
+		 * User enters credentials and submits form
+		 * Auth done on separate URL via OAuth, redirects back to BASE_URL/app once done
+		 * 
+		 * Chrome, FF etc all work fine
+		 * Cypress hangs, never loads.
+		 * 
+		 * Wrap the visit with a cy.origin(BASE_URL) and it all works.
+		 * 
+		 * Now for the problem...
+		 * Occasionally THIS function is triggered and decides that a cy.visit(BASE_URL) is the same thing and breaks all tests
+		 * by throwing the invalid_url_argument_same_origin error below.
+		 * Strangely, once triggered, it stays broken but before this, it all works perfectly.
+		 * 
+		 * So, this function can kindly fuck right off.
+		 */
+
+		/*
     if (cors.urlMatchesPolicyBasedOnDomain(originLocation.href, specHref, {
       skipDomainInjectionForDomains: Cypress.config('experimentalSkipDomainInjection'),
     })) {
@@ -103,5 +123,6 @@ export class Validator {
         },
       })
     }
+		*/
   }
 }
